@@ -1,4 +1,4 @@
-package mcb.todo
+package com.mcb
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.boot.autoconfigure.SpringBootApplication

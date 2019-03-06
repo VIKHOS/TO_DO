@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
 @Entity
-class TodoItem
+class TodoItem constructor()
 {
     @Id
     @GeneratedValue
@@ -13,7 +13,7 @@ class TodoItem
     var description: String = ""
     var completed: Boolean = false
 
-    constructor(desc: String)
+    constructor(desc: String): this()
     {
         description = desc
     }
