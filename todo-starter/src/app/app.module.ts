@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import {TodoListComponent} from './todo/todo-list/todo-list.component';
 import {TodoModule} from './todo/todo.module';
 import {TodoInputBoxComponent} from './todo/todo-input-box/todo-input-box.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import {TodoInputBoxComponent} from './todo/todo-input-box/todo-input-box.compon
   ],
   imports: [
     BrowserModule,
-    TodoModule
+    TodoModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [TodoInputBoxComponent, TodoListComponent]

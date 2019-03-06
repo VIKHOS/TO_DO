@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { TodoInputBoxComponent } from './todo-input-box/todo-input-box.component';
@@ -13,4 +13,8 @@ import {FormsModule} from '@angular/forms';
   providers: [TodoService],
   declarations: [TodoListComponent, TodoInputBoxComponent]
 })
-export class TodoModule { }
+export class TodoModule {
+
+
+
+}
