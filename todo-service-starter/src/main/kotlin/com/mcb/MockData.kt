@@ -1,9 +1,5 @@
 package com.mcb
 
-import com.mcb.restmodel.TodoItem
-import com.mcb.restmodel.TodoList
-import com.mcb.restmodel.TodoListRepository
-import com.mcb.restmodel.TodoService
 import org.slf4j.LoggerFactory
 
 class MockData constructor(var repository: TodoListRepository)
@@ -19,7 +15,7 @@ class MockData constructor(var repository: TodoListRepository)
         var todoList= TodoList(
                 "Work",
                 items = listOf(
-                    TodoItem("Code UI"), TodoItem("Code Backend")
+                        TodoItem("Code UI"), TodoItem("Code Backend")
                 )
         )
 

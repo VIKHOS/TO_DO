@@ -1,4 +1,4 @@
-package com.mcb.restmodel
+package com.mcb
 
 import javax.persistence.*
 
