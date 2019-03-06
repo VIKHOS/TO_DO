@@ -3,7 +3,10 @@ package com.mcb.restmodel
 import javax.persistence.*
 
 @Entity
-class TodoList constructor(var name: String){
+class TodoList (var name: String){
+
+
+    constructor(name: String, items: List<TodoItem>): this(name)
 
     @Id
     @GeneratedValue

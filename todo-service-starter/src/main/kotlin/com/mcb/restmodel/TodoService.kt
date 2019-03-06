@@ -1,6 +1,8 @@
 package com.mcb.restmodel
 
+import com.mcb.MockData
 import mcb.todo.todolist.restmodel.CreateTodoListRequest
+import com.mcb.MockDataconstructor
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -19,6 +21,10 @@ class TodoService @Autowired constructor(var repository: TodoListRepository)
 
     companion object {
         private val logger = LoggerFactory.getLogger(TodoService::class.java)
+    }
+
+    init {
+        MockData.
     }
 
     @PostMapping
@@ -40,7 +46,7 @@ class TodoService @Autowired constructor(var repository: TodoListRepository)
     @GetMapping
     fun fetchTodoList(): ResponseEntity<*>
     {
-        return ResponseEntity.ok(repository.findAll());
+        return ResponseEntity.ok(repository.findAll())
     }
 
 }
