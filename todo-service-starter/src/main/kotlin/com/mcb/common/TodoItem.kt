@@ -1,3 +1,4 @@
+/*
 package com.mcb
 
 import javax.persistence.Entity
@@ -21,3 +22,4 @@ class TodoItem constructor()
 
 }
 
+*/
