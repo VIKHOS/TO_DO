@@ -1,5 +1,5 @@
-<ul *ngIf="todoList!= null">
-  <li  *ngFor="let item of todoList[0].items">
+<ul *ngIf="selectedList!= null">
+  <li  *ngFor="let item of selectedList.items">
     {{item.description}}
   </li>
 </ul>

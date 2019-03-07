@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {TodoService} from '../todo.service';
+import {TodoItemModel} from '../../todo-item-model';
 
 @Component({
   selector: 'app-todo-input-box',
@@ -7,13 +9,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TodoInputBoxComponent implements OnInit {
 
-  constructor() { }
+  private selectedList = 0;
+  public errorMsg = '';
+
+  constructor(private  todoService: TodoService) {}
 
   ngOnInit() {
   }
 
   addItem(newItem: string) {
-    console.log(newItem);
+    // build object
+    let todoItem = new TodoItemModel();
+    todoItem.description = newItem;
+    let res = this.todoService.addItem(this.selectedList, todoItem);
+    if (!res) {
+      this.errorMsg = 'Error while adding new item';
+    }
   }
 
 }

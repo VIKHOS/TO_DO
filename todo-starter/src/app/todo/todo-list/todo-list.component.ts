@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {TodoService} from '../todo.service';
 import {TodoModel} from '../../todo-model';
 
@@ -9,14 +9,16 @@ import {TodoModel} from '../../todo-model';
 })
 export class TodoListComponent implements OnInit {
 
-  todoList: TodoModel[];
+  @Input() selectedList: TodoModel;
+  // todoList: TodoModel[];
 
-  constructor(private todoService: TodoService) {
-    this.todoList = null;
+  constructor() {
+    // private todoService: TodoService
+    // this.todoList = null;
   }
 
   ngOnInit() {
-    this.todoService.getTodoList().subscribe((res) => this.todoList = res);
+    // this.todoService.getTodoList().subscribe((res) => this.todoList = res);
   }
 
 }

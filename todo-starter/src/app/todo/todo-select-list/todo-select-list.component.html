@@ -1,0 +1,10 @@
+<div *ngIf="todoList != null">
+  <select (change)="onSelect($event)">
+    <option *ngFor="let x of todoList"  [value]="x.id">{{x.name}}</option>
+  </select>
+</div>
+<br>
+<div *ngIf="selectedList >= 0">
+  <app-todo-input-box></app-todo-input-box>
+  <app-todo-list [selectedList]="todoList[selectedList]"></app-todo-list>
+</div>

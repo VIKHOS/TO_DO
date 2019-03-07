@@ -4,3 +4,8 @@
   </label>
   <button (click)="addItem(newItem)">Add</button>
 </div>
+<div *ngIf="errorMsg != ''">
+  <p style="color: red">
+    {{errorMsg}}
+  </p>
+</div>
