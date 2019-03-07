@@ -1,15 +1,17 @@
+
+package com.mcb.common
+
+import java.util.*
+
+
+data class TodoItem(val id: Int, val description: String, var completed: Boolean = false)
+
+data class TodoList(val id:Int, val name: String, val items : MutableList<TodoItem> = mutableListOf())
+
+
 /*
-package com.mcb
-
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-
-@Entity
-class TodoItem constructor()
+ class TodoItem constructor()
 {
-    @Id
-    @GeneratedValue
     var id: Int = 0
     var description: String = ""
     var completed: Boolean = false
@@ -20,6 +22,7 @@ class TodoItem constructor()
     }
 
 
-}
 
-*/
+}*/
+
+

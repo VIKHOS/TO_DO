@@ -1,3 +1,4 @@
+/*
 package com.mcb
 
 import org.slf4j.LoggerFactory
@@ -22,4 +23,4 @@ class MockData constructor(var repository: TodoListRepository)
         repository.save(todoList);
 
     }
-}
+}*/

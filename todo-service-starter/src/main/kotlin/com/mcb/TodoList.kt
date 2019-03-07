@@ -1,3 +1,4 @@
+/*
 package com.mcb
 
 import javax.persistence.*
@@ -23,4 +24,4 @@ class TodoList constructor(){
 
     @OneToMany(cascade= arrayOf(CascadeType.ALL),orphanRemoval = true, fetch = FetchType.EAGER)
     var items: List<TodoItem>? = null
-}
+}*/

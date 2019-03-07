@@ -1,3 +1,4 @@
+/*
 package com.mcb
 
 import org.springframework.data.repository.CrudRepository
@@ -28,4 +29,4 @@ interface TodoListRepository:CrudRepository<TodoList,Long>{
 
     override fun deleteAll()
 
-}
+}*/
