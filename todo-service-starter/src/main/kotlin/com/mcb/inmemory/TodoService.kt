@@ -1,18 +1,18 @@
 package com.mcb.inmemory
 
-import com.mcb.common.IDataOperations
-import com.mcb.common.TodoItem
-import com.mcb.common.TodoList
+import com.mcb.common.*
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.net.URI
 
+
+
+
 @RestController
 @RequestMapping("/todos")
 class TodoService{
 
-    val ITEM_NOT_FOUND = -10
     val todoManagement: IDataOperations = TodoManagement()
 
     @PostMapping("/{name}")
@@ -28,9 +28,9 @@ class TodoService{
         try {
             val todoItem = todoManagement.addItem(idList, item.description)
             return ResponseEntity.created(URI.create("/todos/"+todoItem.id)).body(todoItem)
-        } catch (e: ClassNotFoundException)
+        } catch (e: TodoException)
         {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ITEM_NOT_FOUND)
+            return handleToDoException(e)
         }
 
     }
@@ -41,9 +41,9 @@ class TodoService{
         try {
             todoManagement.deleteItem(idList,idItem)
             return ResponseEntity.ok("OK")
-        } catch (e: ClassNotFoundException)
+        } catch (e: TodoException)
         {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ITEM_NOT_FOUND)
+            return handleToDoException(e)
         }
     }
 
@@ -53,46 +53,25 @@ class TodoService{
         val listTodo = todoManagement.fetchAll()
         return ResponseEntity.ok(listTodo)
     }
-    @PutMapping("item/{idList}/{idItem}/{completeFlag" +
-            "" +
-            "" +
-            "" +
-            "" +
-            "" +
-            "" +
-            "
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}")
-    fun updateItemFromList(@PathVariable idList: Int, @PathVariable idItem: Int, @PathVariable completeFlag:Boolean): ResponseEntity<*>{
+    @PutMapping("item/{idList}/{idItem}/{completeFlag}")
+    fun updateItemFromList(@PathVariable idList: Int, @PathVariable idItem: Int, @PathVariable completeFlag:Boolean): ResponseEntity<*> {
 
         try {
-            todoManagement.updateItem(idList,idItem,completeFlag)
+            todoManagement.updateItem(idList, idItem, completeFlag)
             return ResponseEntity.ok("OK")
-        } catch (e: ClassNotFoundException)
+        } catch (e: TodoException)
         {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ITEM_NOT_FOUND)
+           return handleToDoException(e)
+        }
+    }
+
+
+    fun handleToDoException(ex: TodoException):ResponseEntity<*>
+    {
+        return when(ex.message)
+        {
+            ITEM_NOT_FOUND ->ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.message)
+            else -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.message)
         }
     }
 

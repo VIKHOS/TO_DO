@@ -1,8 +1,6 @@
 package com.mcb.inmemory
 
-import com.mcb.common.IDataOperations
-import com.mcb.common.TodoItem
-import com.mcb.common.TodoList
+import com.mcb.common.*
 
 class TodoManagement : IDataOperations {
 
@@ -37,25 +35,34 @@ class TodoManagement : IDataOperations {
     @Throws(Exception::class)
     override fun deleteItem(idList: Int, idItem: Int) {
         val todoList = fetchTodoListFromId(idList)
-        val todoItem = todoList.items.find{ todoItem: TodoItem -> todoItem.id == idItem }
-        if(todoItem==null){
-            throw ClassNotFoundException()
-        }
-        else{
-            todoList.items.remove(todoItem)
+
+        //checking if not empty
+        if(todoList.items.size == 0)
+        {
+            throw TodoException(LIST_EMPTY)
+        } else {
+            val todoItem = todoList.items.find { todoItem: TodoItem -> todoItem.id == idItem }
+            if (todoItem == null) {
+                throw  TodoException(ITEM_NOT_FOUND)
+            } else {
+                todoList.items.remove(todoItem)
+            }
         }
 
     }
     @Throws(Exception::class)
     override fun updateItem(idList: Int, idItem: Int, completeFlag: Boolean) {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         val todoList = fetchTodoListFromId(idList)
         val todoItem = todoList.items.find{ todoItem: TodoItem -> todoItem.id == idItem }
         if(todoItem==null){
-            throw ClassNotFoundException()
+            throw  TodoException(ITEM_NOT_FOUND)
         }
         else{
-            todoItem.completed=completeFlag
+            if(todoItem.completed == completeFlag) {
+                throw  TodoException(STATUS_ALREADY_SET)
+            } else {
+                todoItem.completed = completeFlag
+            }
         }
     }
 
@@ -65,7 +72,7 @@ class TodoManagement : IDataOperations {
         val todoList = listTodoList.find{ todoList -> todoList.id == idList }
         if(todoList == null)
         {
-            throw ClassNotFoundException()
+            throw  TodoException(ITEM_NOT_FOUND)
         } else
         {
             return todoList
