@@ -10,15 +10,27 @@ class TodoManagement : IDataOperations {
     private var idList : Int = 1
     private var idItem: Int = 1
 
+    @Throws(Exception::class)
     override fun createTodoList(name: String, items: MutableList<TodoItem>) : TodoList {
-        val todoList = TodoList(idList, name, items)
-        idList++
-        listTodoList.add(todoList)
-        return todoList
+        if(name.trim() == "") {
+            throw TodoException(BLANK_INPUT)
+        } else {
+            //check for duplicates
+            val existingItem = listTodoList.find { todoList: TodoList -> todoList.name == name }
+            if (existingItem != null) {
+                throw TodoException(ALREADY_EXISTS)
+            } else {
+                val todoList = TodoList(idList, name, items)
+                idList++
+                listTodoList.add(todoList)
+                return todoList
+            }
+        }
     }
 
     @Throws(Exception::class)
     override fun addItem(idList: Int, description: String) : TodoItem {
+
         val todoList = fetchTodoListFromId(idList)
         val item = TodoItem(idItem, description)
         todoList.items.add(item)

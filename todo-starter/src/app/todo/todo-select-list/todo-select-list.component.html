@@ -1,10 +1,22 @@
+<div>
+  <label>Create a new list:
+    <input [(ngModel)]="newItemName" placeholder="name">
+  </label>
+  <button (click)="createTodoList(newItemName)">Create</button>
+</div>
+<br>
+<div *ngIf="errorMsg != null ">
+  <p>{{errorMsg}}</p>
+</div>
+
 <div *ngIf="todoList != null">
+  Select your todo list:
   <select (change)="onSelect($event)">
     <option *ngFor="let x of todoList"  [value]="x.id">{{x.name}}</option>
   </select>
 </div>
 <br>
 <div *ngIf="selectedList >= 0">
-  <app-todo-input-box></app-todo-input-box>
+  <app-todo-input-box [selectedList] = "todoList[selectedList]" ></app-todo-input-box>
   <app-todo-list [selectedList]="todoList[selectedList]"></app-todo-list>
 </div>

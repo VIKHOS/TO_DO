@@ -1,5 +1,17 @@
+
+
+
+<div *ngIf="errorMsg != ''">
+  <p style="color: red">
+    {{errorMsg}}
+  </p>
+</div>
+
+
 <ul *ngIf="selectedList!= null">
   <li  *ngFor="let item of selectedList.items">
-    {{item.description}}
+    <span [ngClass]="{strikethrough: item.completed}">{{item.description}}</span>
+    <button (click)="completeItem(item)"><span *ngIf="item.completed">Un</span>Complete</button>
+    <button (click)="deleteItem(item)">Delete</button>
   </li>
 </ul>

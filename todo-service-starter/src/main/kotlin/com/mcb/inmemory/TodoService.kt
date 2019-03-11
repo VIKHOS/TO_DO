@@ -10,6 +10,7 @@ import java.net.URI
 
 
 @RestController
+@CrossOrigin(origins = ["*"])
 @RequestMapping("/todos")
 class TodoService{
 
@@ -18,19 +19,24 @@ class TodoService{
     @PostMapping("/{name}")
     fun createTodoList(@PathVariable name: String) : ResponseEntity<*>
     {
-        val todoListItem = todoManagement.createTodoList(name, mutableListOf())
-        return ResponseEntity.created(URI.create("/todos/"+todoListItem.id)).body(todoListItem)
+        return try {
+            val todoListItem = todoManagement.createTodoList(name, mutableListOf())
+            ResponseEntity.created(URI.create("/todos/" + todoListItem.id)).body(todoListItem)
+        } catch (e: TodoException)
+        {
+            handleToDoException(e)
+        }
     }
 
     @PostMapping("/item/{idList}")
     fun addItem(@PathVariable idList: Int, @RequestBody item: TodoItem): ResponseEntity<*>
     {
-        try {
+        return try {
             val todoItem = todoManagement.addItem(idList, item.description)
-            return ResponseEntity.created(URI.create("/todos/"+todoItem.id)).body(todoItem)
+            ResponseEntity.created(URI.create("/todos/"+todoItem.id)).body(todoItem)
         } catch (e: TodoException)
         {
-            return handleToDoException(e)
+            handleToDoException(e)
         }
 
     }
@@ -38,12 +44,12 @@ class TodoService{
     @DeleteMapping("item/{idList}/{idItem}")
     fun deleteItemFromList(@PathVariable idList: Int, @PathVariable idItem: Int): ResponseEntity<*>{
 
-        try {
+        return try {
             todoManagement.deleteItem(idList,idItem)
-            return ResponseEntity.ok("OK")
+            ResponseEntity.ok(TodoResponse("Ok"))
         } catch (e: TodoException)
         {
-            return handleToDoException(e)
+            handleToDoException(e)
         }
     }
 
@@ -58,7 +64,7 @@ class TodoService{
 
         try {
             todoManagement.updateItem(idList, idItem, completeFlag)
-            return ResponseEntity.ok("OK")
+            return ResponseEntity.ok(TodoResponse("Ok"))
         } catch (e: TodoException)
         {
            return handleToDoException(e)
@@ -68,10 +74,12 @@ class TodoService{
 
     fun handleToDoException(ex: TodoException):ResponseEntity<*>
     {
+
         return when(ex.message)
         {
-            ITEM_NOT_FOUND ->ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.message)
-            else -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.message)
+            ITEM_NOT_FOUND ->ResponseEntity.status(HttpStatus.NOT_FOUND).body(TodoResponse(ex.message))
+            null -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex)
+            else -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body(TodoResponse(ex.message))
         }
     }
 

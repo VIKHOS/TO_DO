@@ -3,21 +3,19 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TodoListComponent } from './todo-list.component';
 import {TodoService} from '../todo.service';
 import {By} from '@angular/platform-browser';
+import {FormsModule} from '@angular/forms';
+import {TodoInputBoxComponent} from '../todo-input-box/todo-input-box.component';
 
 describe('TodoListComponent', () => {
   let component: TodoListComponent;
   let fixture: ComponentFixture<TodoListComponent>;
-  let todoService: Partial<TodoService>;
 
   beforeEach(async(() => {
-    todoService = {
-      items: ['one', 'two', 'three']
-    };
     TestBed.configureTestingModule({
-      declarations: [ TodoListComponent ],
-      providers: [{provide: TodoService, useValue: todoService}]
+      imports: [FormsModule],
+      declarations: [ TodoListComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

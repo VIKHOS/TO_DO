@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {TodoService} from '../todo.service';
 import {TodoItemModel} from '../../todo-item-model';
+import {TodoModel} from '../../todo-model';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-todo-input-box',
@@ -9,7 +11,7 @@ import {TodoItemModel} from '../../todo-item-model';
 })
 export class TodoInputBoxComponent implements OnInit {
 
-  private selectedList = 0;
+  @Input() selectedList: TodoModel;
   public errorMsg = '';
 
   constructor(private  todoService: TodoService) {}
@@ -21,10 +23,12 @@ export class TodoInputBoxComponent implements OnInit {
     // build object
     let todoItem = new TodoItemModel();
     todoItem.description = newItem;
-    let res = this.todoService.addItem(this.selectedList, todoItem);
-    if (!res) {
-      this.errorMsg = 'Error while adding new item';
-    }
-  }
+    this.todoService.addItem(this.selectedList.id, todoItem).subscribe(
+      (v) => {
+        this.selectedList.items.push(JSON.parse(v as string) as TodoItemModel);
+      },
+      (e) => this.errorMsg = 'Error while adding new item' + e.toString()
+    );
 
+  }
 }
