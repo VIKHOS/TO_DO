@@ -4,15 +4,22 @@ import { TodoSelectListComponent } from './todo-select-list.component';
 import {TodoModel} from '../../todo-model';
 import {TodoService} from '../todo.service';
 import {of} from 'rxjs';
+import {FormsModule} from '@angular/forms';
+import {TodoListComponent} from '../todo-list/todo-list.component';
+import {TodoInputBoxComponent} from '../todo-input-box/todo-input-box.component';
+import {HttpClient, HttpHandler} from '@angular/common/http';
 
 describe('TodoSelectListComponent', () => {
   let component: TodoSelectListComponent;
   let fixture: ComponentFixture<TodoSelectListComponent>;
   let todoService: TodoService;
 
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TodoSelectListComponent ]
+      imports: [FormsModule],
+      declarations: [ TodoSelectListComponent, TodoListComponent, TodoInputBoxComponent ],
+      providers: [HttpClient, HttpHandler]
     })
     .compileComponents();
   }));

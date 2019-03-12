@@ -7,15 +7,17 @@ import {TodoModule} from './todo/todo.module';
 import {TodoInputBoxComponent} from './todo/todo-input-box/todo-input-box.component';
 import { HttpClientModule } from '@angular/common/http';
 import { TodoSelectListComponent } from './todo/todo-select-list/todo-select-list.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
     TodoModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [TodoSelectListComponent]

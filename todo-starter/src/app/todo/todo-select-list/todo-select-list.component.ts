@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {TodoModel} from '../../todo-model';
 import {TodoService} from '../todo.service';
 import {TodoListComponent} from '../todo-list/todo-list.component';
+import {TodoItemModel} from '../../todo-item-model';
 
 @Component({
   selector: 'app-todo-select-list',
@@ -13,10 +14,11 @@ export class TodoSelectListComponent implements OnInit {
   todoList: TodoModel[];
   selectedList: number;
   errorMsg: String;
+  newItemName: String;
 
 
   constructor(private todoService: TodoService) {
-    this.todoList = null;
+    this.todoList = new Array<TodoModel>();
     this.selectedList = -1;
     this.errorMsg = null;
   }
@@ -36,14 +38,16 @@ export class TodoSelectListComponent implements OnInit {
 
 
   createTodoList(newItemName: String) {
+
     this.todoService.createTodoList(newItemName).subscribe(
-      (value) => this.fetchAllList(),
-      (e: ErrorEvent) => this.errorMsg = 'Error while creating new list: ' + e.message
+      (v) => {
+        this.todoList.push(v as TodoModel);
+      },
+      (e: ErrorEvent) => this.errorMsg = 'Error while adding new item' + e.message
     );
   }
 
   onSelect(event) {
     this.selectedList = event.srcElement.selectedIndex;
-    console.log(this.selectedList);
   }
 }
