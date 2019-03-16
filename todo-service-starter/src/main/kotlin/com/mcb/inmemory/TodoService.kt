@@ -2,6 +2,7 @@ package com.mcb.inmemory
 
 import com.mcb.common.*
 import com.mcb.db.TodoListRepository
+import com.mcb.db.TodoRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -16,7 +17,7 @@ import java.net.URI
 @CrossOrigin(origins = ["*"])
 @RequestMapping("/todos")
 @Component
-class TodoService @Autowired constructor(val todoListRepository: TodoListRepository){
+class TodoService @Autowired constructor(val todoRepository: TodoRepository){
 
     val todoManagement: IDataOperations = TodoManagement()
 
@@ -25,7 +26,7 @@ class TodoService @Autowired constructor(val todoListRepository: TodoListReposit
     fun createTodoList(@PathVariable name: String) : ResponseEntity<*>
     {
         return try {
-            val todoListItem = todoListRepository.createTodoList(name, mutableListOf())
+            val todoListItem = todoRepository.createTodoList(name, mutableListOf())
             ResponseEntity.created(URI.create("/todos/" + todoListItem.id)).body(todoListItem)
         } catch (e: TodoException)
         {
@@ -37,7 +38,7 @@ class TodoService @Autowired constructor(val todoListRepository: TodoListReposit
     fun addItem(@PathVariable idList: Int, @RequestBody item: TodoItem): ResponseEntity<*>
     {
         return try {
-            val todoItem = todoManagement.addItem(idList, item.description)
+            val todoItem = todoRepository.addItem(idList, item.description)
             ResponseEntity.created(URI.create("/todos/"+todoItem.id)).body(todoItem)
         } catch (e: TodoException)
         {
@@ -61,7 +62,7 @@ class TodoService @Autowired constructor(val todoListRepository: TodoListReposit
     @GetMapping
     fun listAllTodoList() : ResponseEntity<*>
     {
-        val listTodo = todoManagement.fetchAll()
+        val listTodo = todoRepository.fetchAll()
         return ResponseEntity.ok(listTodo)
     }
     @PutMapping("item/{idList}/{idItem}/{completeFlag}")
