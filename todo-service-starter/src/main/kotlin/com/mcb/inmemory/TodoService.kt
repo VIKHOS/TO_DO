@@ -1,8 +1,11 @@
 package com.mcb.inmemory
 
 import com.mcb.common.*
+import com.mcb.db.TodoListRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.*
 import java.net.URI
 
@@ -12,15 +15,17 @@ import java.net.URI
 @RestController
 @CrossOrigin(origins = ["*"])
 @RequestMapping("/todos")
-class TodoService{
+@Component
+class TodoService @Autowired constructor(val todoListRepository: TodoListRepository){
 
     val todoManagement: IDataOperations = TodoManagement()
+
 
     @PostMapping("/{name}")
     fun createTodoList(@PathVariable name: String) : ResponseEntity<*>
     {
         return try {
-            val todoListItem = todoManagement.createTodoList(name, mutableListOf())
+            val todoListItem = todoListRepository.createTodoList(name, mutableListOf())
             ResponseEntity.created(URI.create("/todos/" + todoListItem.id)).body(todoListItem)
         } catch (e: TodoException)
         {
