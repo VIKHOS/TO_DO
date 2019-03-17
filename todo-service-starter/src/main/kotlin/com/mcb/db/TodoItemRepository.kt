@@ -36,7 +36,7 @@ class TodoItemRepository @Autowired constructor(private val dataSource: DataSour
             override fun createPreparedStatement(it: Connection): PreparedStatement {
                 val ps = it.prepareStatement(insertSql)
                 ps.setString(1, description)
-                ps.setBoolean(2, completed)
+                ps.setInt(2, (if (completed) 1 else 0))
                 ps.setInt(3, listId)
                 return ps
             }
@@ -60,11 +60,41 @@ class TodoItemRepository @Autowired constructor(private val dataSource: DataSour
         {
             val id = row[idField] as BigDecimal
             val desc = row[descField] as String
-            val completed = (row[completedField] == 1)
+            val completedIntValue = row[completedField] as Short
+            val completed = completedIntValue.toInt() == 1
             listItems.add(TodoItem(id.intValueExact(), desc, completed))
         }
 
         return listItems
+    }
+
+    fun deleteItem(idItem: Int, idList: Int): Int {
+
+        val query = "DELETE FROM $todoItemTable WHERE $idField = $idItem" +
+                                                "AND $listIdField = $idList"
+
+        val preparedStatement = PreparedStatementCreator { connection -> connection.prepareStatement(query)  }
+
+        return jdbcTemplate.update(preparedStatement)
+    }
+
+
+    fun updateItem(idItem: Int, idList: Int, completed: Boolean): Int {
+
+        val query = "UPDATE  $todoItemTable " +
+                "SET $completedField = ?  " +
+                "WHERE $idField = $idItem" +
+                "AND $listIdField = $idList"
+
+        val preparedStatement = object : PreparedStatementCreator {
+            override fun createPreparedStatement(it: Connection): PreparedStatement {
+                val ps = it.prepareStatement(query)
+                ps.setInt(1, (if (completed) 1 else 0))
+                return ps
+            }
+        }
+
+        return jdbcTemplate.update(preparedStatement)
     }
 
 }

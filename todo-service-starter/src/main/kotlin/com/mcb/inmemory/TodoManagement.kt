@@ -30,12 +30,15 @@ class TodoManagement : IDataOperations {
 
     @Throws(Exception::class)
     override fun addItem(idList: Int, description: String) : TodoItem {
-
-        val todoList = fetchTodoListFromId(idList)
-        val item = TodoItem(idItem, description)
-        todoList.items.add(item)
-        idItem++
-        return item
+        if(description.trim() == "") {
+            throw TodoException(BLANK_INPUT)
+        } else {
+            val todoList = fetchTodoListFromId(idList)
+            val item = TodoItem(idItem, description)
+            todoList.items.add(item)
+            idItem++
+            return item
+        }
 
 
     }
@@ -48,11 +51,11 @@ class TodoManagement : IDataOperations {
     override fun deleteItem(idList: Int, idItem: Int) {
         val todoList = fetchTodoListFromId(idList)
 
-        //checking if not empty
-        if(todoList.items.size == 0)
-        {
-            throw TodoException(LIST_EMPTY)
-        } else {
+            //checking if not empty
+            if(todoList.items.size == 0)
+            {
+                throw TodoException(LIST_EMPTY)
+            } else {
             val todoItem = todoList.items.find { todoItem: TodoItem -> todoItem.id == idItem }
             if (todoItem == null) {
                 throw  TodoException(ITEM_NOT_FOUND)

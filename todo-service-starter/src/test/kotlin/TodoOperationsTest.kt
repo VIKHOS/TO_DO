@@ -17,47 +17,6 @@ import org.springframework.http.HttpStatus
 class TodoOperationsTest()
 {
 
-
-    /*@Autowired
-    val restTemplate = TestRestTemplate()
-
-    val rootUrl = "http://localhost:8083"
-
-
-    @Test
-    fun `Create a new todolist`()
-    {
-        val newTodoListName = "Work"
-        val responseEntity = restTemplate.postForEntity<TodoList>("$rootUrl/todos/$newTodoListName")
-        Assert.assertEquals(HttpStatus.CREATED, responseEntity.statusCode)
-        Assert.assertEquals(newTodoListName, responseEntity.body?.name)
-    }
-
-    /*@Test
-    fun `Creating a new todolist which name already exists`()
-    {
-        val newTodoListName = "Work"
-
-        //first creation
-        val respEntFirstStep = restTemplate.postForEntity<TodoList>("$rootUrl/todos/$newTodoListName")
-
-        //second creation
-        val respEntSecondStep = restTemplate.postForEntity<TodoResponse>("$rootUrl/todos/$newTodoListName")
-
-        Assert.assertEquals(HttpStatus.BAD_REQUEST, respEntSecondStep.statusCode)
-        Assert.assertEquals(ALREADY_EXISTS, respEntSecondStep.body?.responseMsg)
-
-    }*/
-
-    @Test
-    fun `given a blank name, create a new todolist`()
-    {
-        val newTodoListName = ""
-        val responseEntity = restTemplate.postForEntity<TodoResponse>("$rootUrl/todos/$newTodoListName")
-        Assert.assertEquals(HttpStatus.METHOD_NOT_ALLOWED, responseEntity.statusCode)
-    }*/
-
-
     @Test
     fun `Create new todo list`()
     {
@@ -104,6 +63,50 @@ class TodoOperationsTest()
         Assert.assertEquals(expResFirstStep , resultFirstStep)
         Assert.assertEquals(expResSecondStep , resultSecondStep)
 
+    }
+
+    //test to create an item
+    @Test
+    fun `Add item to existing list`(){
+        val todoManagement = TodoManagement()
+        val toDoList= todoManagement.createTodoList("Work", mutableListOf())
+        val toDoItemDescription="Piece of word"
+
+        todoManagement.addItem(toDoList.id,toDoItemDescription)
+        val listTdList = todoManagement.fetchAll()
+        Assert.assertEquals(listTdList.first().items.first().description,toDoItemDescription)
+    }
+
+    //test with blank description
+    @Test(expected = TodoException::class)
+    fun `Given blank description add item to list`(){
+        val todoManagement = TodoManagement()
+        val toDoList= todoManagement.createTodoList("Work", mutableListOf())
+        val toDoItemDescription=""
+
+        todoManagement.addItem(toDoList.id,toDoItemDescription)
+
+    }
+    //add item to a list which does not exist
+    @Test(expected =  TodoException::class)
+    fun `Add item to a non existing list`(){
+        val todoManagement = TodoManagement()
+        val toDoItemDescription="some item description"
+
+        todoManagement.addItem(1,toDoItemDescription)
+    }
+    //add several item to the same list
+    @Test
+    fun `Add several item to same list`(){
+        val todoManagement= TodoManagement()
+        val todoList=todoManagement.createTodoList("Work", mutableListOf())
+
+        todoManagement.addItem(todoList.id,"item description1")
+        todoManagement.addItem(todoList.id,"item description2")
+
+        val listTdList =todoManagement.fetchAll()
+        Assert.assertEquals(listTdList.first().items.first().description,"item description1")
+        Assert.assertEquals(listTdList.first().items[1].description,"item description2")
     }
 
 

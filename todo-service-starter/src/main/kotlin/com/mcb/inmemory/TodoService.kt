@@ -51,7 +51,7 @@ class TodoService @Autowired constructor(val todoRepository: TodoRepository){
     fun deleteItemFromList(@PathVariable idList: Int, @PathVariable idItem: Int): ResponseEntity<*>{
 
         return try {
-            todoManagement.deleteItem(idList,idItem)
+            todoRepository.deleteItem(idList,idItem)
             ResponseEntity.ok(TodoResponse("Ok"))
         } catch (e: TodoException)
         {
@@ -69,7 +69,7 @@ class TodoService @Autowired constructor(val todoRepository: TodoRepository){
     fun updateItemFromList(@PathVariable idList: Int, @PathVariable idItem: Int, @PathVariable completeFlag:Boolean): ResponseEntity<*> {
 
         try {
-            todoManagement.updateItem(idList, idItem, completeFlag)
+            todoRepository.updateItem(idList, idItem, completeFlag)
             return ResponseEntity.ok(TodoResponse("Ok"))
         } catch (e: TodoException)
         {
